@@ -10,7 +10,7 @@
 #define PAN_MIN_CHAR        16 /* Account number min allowed string length */
 
 #define EXDATE_MAX_CHAR     6  /* Expiry date max allowed string length */
-#define EXDATE_MAX_CHAR     5  /* Expiry date max allowed string length */
+#define EXDATE_MIN_CHAR     5  /* Expiry date min allowed string length */
 
 /* 
  * This enum defines the error check type for
