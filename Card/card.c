@@ -5,6 +5,7 @@
 
 
 EN_cardError_t getCardHolderName(ST_cardData_t* cardData){
+    printf("Enter your card name:");
     // reading the name from user with fgets to read string with spaced
     // there're different methods to do the same thing too with scanf and gets functions
     fgets(cardData->cardHolderName, HOLDER_MAX_CHAR, stdin);
@@ -16,6 +17,7 @@ EN_cardError_t getCardHolderName(ST_cardData_t* cardData){
 }
 
 EN_cardError_t getCardExpiryDate(ST_cardData_t* cardData){
+    printf("Enter your card expiry date:");
     // reading the name from user with fgets to read string with spaced
     // there're different methods to do the same thing too with scanf and gets functions
     fgets(cardData->cardExpirationDate, HOLDER_MAX_CHAR, stdin);
@@ -30,6 +32,7 @@ EN_cardError_t getCardExpiryDate(ST_cardData_t* cardData){
 }
 
 EN_cardError_t getCardPAN(ST_cardData_t* cardData){    
+    printf("Enter your card PAN:");
     // reading the PAN from user with fgets to read string with spaced
     // there're different methods to do the same thing too with scanf and gets functions
     fgets(cardData->primaryAccountNumber, HOLDER_MAX_CHAR, stdin);
