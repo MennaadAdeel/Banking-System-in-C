@@ -3,6 +3,8 @@
 
 #include "../global.h"
 
+#define DATE_LENTH 10   // The valid length of Date
+
 EN_terminalError_t getTransactionDate(ST_terminalData_t *termData);
 
 typedef struct ST_terminalData_t
