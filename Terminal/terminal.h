@@ -2,14 +2,11 @@
 #define _TERMINA_H_
 
 #include "../global.h"
-<<<<<<< HEAD
 
 #define DATE_LENTH 10   // The valid length of Date
 
 EN_terminalError_t getTransactionDate(ST_terminalData_t *termData);
-=======
 #include "../Card/card.h"
->>>>>>> 70bf4eb (terminal amt first commit)
 
 typedef struct ST_terminalData_t
 {

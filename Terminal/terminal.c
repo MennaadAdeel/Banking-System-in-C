@@ -28,7 +28,6 @@ EN_terminalError_t getTransactionDate(ST_terminalData_t *termData)
 
 }
 
-<<<<<<< HEAD
 // Function to check if the date entered by the user is valid or not
 uint8_t Check_Term_Date(uint8_t date)
 {
@@ -37,15 +36,23 @@ uint8_t Check_Term_Date(uint8_t date)
     
     else
          return VALID;   //return 1
-=======
+
+}
+
 EN_terminalError_t isCardExpired(ST_cardData_t cardData, ST_terminalData_t termData){
     // comapare the card expiry date with the date of today
     // it should be less than the date of transaction
-    if()
->>>>>>> 70bf4eb (terminal amt first commit)
+    if(compareDates(cardData.cardExpirationDate, termData.TransActionData) == VALID)
+        return OK; // card is still valid and not expired
+    
+    return EXPIRED_CARD; // card expired
 }
 
 static uint8_t compareDates(uint8_t exDate[], uint8_t TransDate[]){
-       
-    if()
+    // strcmp will compare the two dates according to the ASCII code
+    // of each character
+    if(strcmp(exDate, TransDate) > 0)
+        return VALID; // the date is still valid
+    
+    return INVALID; // date expired
 }
