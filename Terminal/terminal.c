@@ -3,7 +3,9 @@
 #include "../global.h"
 #include "terminal.h"
 
-EN_cardError_t grtCardHolderName(ST_cardData_t *cardData)
+EN_terminalError_t getTransactionDate(ST_terminalData_t *termData)
 {
-    
+
 }
+
+
