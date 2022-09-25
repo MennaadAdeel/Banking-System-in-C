@@ -4,7 +4,10 @@
 #include "../global.h"
 #include "../Card/card.h"
 
-#define DATE_LENTH 11   // The valid length of Date
+#define DATE_LENTH                  11  // The valid length of Date
+
+#define MAX_TRANSACTION_AMOUNT      2000 // the max amount of money that a user can transacte
+
 
 EN_terminalError_t getTransactionDate(ST_terminalData_t *termData);
 

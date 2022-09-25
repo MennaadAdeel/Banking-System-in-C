@@ -9,7 +9,7 @@ EN_terminalError_t getTransactionDate(ST_terminalData_t *termData)
     printf("Enter the Transaction date");
     // printf to take the date of card from the user
 
-    gets(termData ->TransActionData);
+    gets(termData->TransActionData);
     // gets is to read the string date from user
 
     // function to check if there's Null char or exceeded the lenght
