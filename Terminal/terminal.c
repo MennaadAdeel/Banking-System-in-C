@@ -13,11 +13,11 @@ EN_terminalError_t getTransactionDate(ST_terminalData_t *termData)
     // gets is to read the string date from user
 
     // function to check if there's Null char or exceeded the lenght
-    if(Check_Term_Date(termData->TransActionData) == VALID)
-        return OK;  //the date is matching the characteristics
+    if(Check_Term_Date(termData->TransActionData) == INVALID)
+        return WRON_DATE;  //the date isn't matching the characteristics
 
     else
-        return WRON_DATE; //the date isn't matching the characteristics
+        return OK; //the date is matching the characteristics
 
 }
 
@@ -51,6 +51,22 @@ static uint8_t compareDates(uint8_t exDate[], uint8_t TransDate[]){
 EN_terminalError_t getTransactionAmount(ST_terminalData_t *termData)
 {
     printf("Enter the Transaction Amount");
+    // printf is to take the transaction Amount
+    scanf("%f",termData->transAmount);
+    //take the float number and save it in termdata
+    //function that check if the transaction is bigger than zero
+    if(Check_Term_Amount == INVALID)
+       return INVALID_AMOUNT;
+    else
+       return OK;
     
 
+}
+
+static f32_t Check_Term_Amount(f32_t data)
+{
+    if(data <= ZERO)
+       return INVALID;
+    else
+       return VALID;
 }

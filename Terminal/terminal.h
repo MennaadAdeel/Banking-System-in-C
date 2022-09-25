@@ -5,6 +5,7 @@
 #include "../Card/card.h"
 
 #define DATE_LENTH 10   // The valid length of Date
+#define ZERO 0          // invalid amount 
 
 
 typedef struct ST_terminalData_t
@@ -35,6 +36,7 @@ EN_terminalError_t getTransactionDate(ST_terminalData_t *termData);
 static uint8_t Check_Term_Date(uint8_t date);
 
 
+
 EN_terminalError_t isCardExpired(ST_cardData_t cardData, ST_terminalData_t termData);
 
 /*
@@ -46,6 +48,14 @@ INVALID: if the date is less than the date of transaction
 static uint8_t compareDates(uint8_t exDate[], uint8_t TransDate[]);
 
 
+
 EN_terminalError_t getTransactionAmount(ST_terminalData_t *termData);
+/*
+* function to take from the user the transaction float number
+* and check if it's matching the characteristics or not
+* by check out if it's biger than or equal zero.
+*/
+static f32_t Check_Term_Amount(f32_t data);
+
 
 #endif
