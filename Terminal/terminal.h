@@ -4,14 +4,15 @@
 #include "../global.h"
 #include "../Card/card.h"
 
-#define DATE_LENTH 10   // The valid length of Date
+#define DATE_LENTH 11   // The valid length of Date
 
+EN_terminalError_t getTransactionDate(ST_terminalData_t *termData);
 
 typedef struct ST_terminalData_t
 {
     float transAmount;
     float maxTransAmount;
-    uint8_t TransActionData[11];
+    uint8_t TransActionData[DATE_LENTH];
 }ST_terminalData_t;
 
 
