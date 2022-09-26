@@ -72,8 +72,22 @@ static uint8_t Check_Term_Date(uint8_t date)
 
 static f32_t Check_Term_Amount(f32_t data)
 {
+    //this condition is to check whether th transaction ammount
+    //is less than or equal to zero 
     if(data <= ZERO)
-       return INVALID;
+       return INVALID; //return 0
     else
-       return VALID;
+       return VALID;  //return 1
+}
+
+
+EN_terminalError_t setMaxAmount(ST_terminalData_t *termData)
+{
+    //setting the Max Transaction Amount value 
+    termData->maxTransAmount = MAX_TRANSACTION_AMOUNT;
+    //condition to check whether the MaxAmount is bigger than or equal to zero
+    if(termData <=0)
+       return INVALID_MAX_AMOUNT;
+    else
+       return OK;
 }
