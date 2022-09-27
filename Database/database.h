@@ -4,13 +4,14 @@
 #include "../global.h"
 #include "../Server/server.h"
 
-#define FILE_BATH       "data.txt" // here we configure the file bath
+#define FILE_PATH       "data.txt" // here we configure the file bath
 #define CREATE_FILE          "a"   // use this flag in fopen to create the file
 #define READ_FROM_FILE       "r"   // use this falg in fopen to read from file
 #define WRITE_TO_FILE        "w"   // use this flag in fopen to write to a file
 #define READ_WRITE           "rw"  // this flag is used in functions that needs to read and write in the same time
 
-
+#define MAX_PAN              100
+#define VALID_DATA_INPUT     1
 /*
 this function is used to search about a user in the database using 
 its pinary account number
