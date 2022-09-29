@@ -3,6 +3,8 @@
 #include "../global.h"
 #include "database.h"
 
+// global pointer to file, used to point to the oppened file and 
+// manage the operations on that file (open, read, write, close)
 FILE *databaseFile = NULL;
 
 
