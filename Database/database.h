@@ -15,15 +15,23 @@
 #define FILE_PATH_MAX_LENGTH    100     // max length of the file path in the database
 #define MAX_PAN              100        // max pan characters
 #define VALID_DATA_INPUT     1          // for checking validity of the data
+
+typedef enum DatabaseError_t{
+  OK,
+  INVALID_DATA_INPUT,
+  NOT_INSERTED,
+  
+}DatabaseError_t;
+
 /*
 this function is used to search about a user in the database using 
 its pinary account number
 
 returns:
-VALID: if the PAN is existed in the database
-INVALID: if the PAN is not in the database
+OK: if the PAN is existed in the database
+INVALID_DATA_INPUT: if the PAN is not in the database
 */
-uint8_t searchInDatabase(uint8_t PAN[]);
+DatabaseError_t searchInDatabase(uint8_t PAN[]);
 
 
 /*this function is used to map a path for the user file in database
@@ -32,6 +40,7 @@ uint8_t searchInDatabase(uint8_t PAN[]);
   returns:
     length of the path mapped
 */
+
 uint8_t mapUserFilePath(uint8_t holderName[], uint8_t PAN[], uint8_t Path[]);
 
 
@@ -39,22 +48,22 @@ uint8_t mapUserFilePath(uint8_t holderName[], uint8_t PAN[], uint8_t Path[]);
 this function is used to insert user info into database
 
 returns:
-INSERTED: if data is inserted successfully
-DB_ERROR: if data was not inserted successfully
+OK: if data is inserted successfully
+NOT_INSERTED: if data was not inserted successfully
 */
-uint8_t insertToDatabase(uint8_t PAN[], f32_t balance);
+DatabaseError_t insertToDatabase(uint8_t PAN[], f32_t balance);
 
 
 /*
 this function is used to get the user palance for 
 already existed user in the database
 returns: 
-USER_BALANCE_OK: if the user has a valid balance in the data base
+OK: if the user has a valid balance in the data base
                  i.e (not a 0 balance)
-DB_ERROR: if the user has invalid balance in the database
-          suggestions (ask him to insert money to his account)
+INVALID_DATA_INPUT: if the user has invalid balance in the database
+                    suggestions (ask him to insert money to his account)
 */
-uint8_t getBalance(uint8_t PAN[], f32_t* balance);
+DatabaseError_t getBalance(uint8_t PAN[], f32_t* balance);
 
 
 /*
