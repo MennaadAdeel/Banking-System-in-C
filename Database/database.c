@@ -8,9 +8,9 @@
 static FILE *databaseFile = NULL;
 
 
-DatabaseError_t searchInDatabase(uint8_t PAN[]){
+EN_DatabaseError_t searchInDatabase(uint8_t PAN[]){
     if(databaseFile = fopen(FILE_PATH, READ_FROM_FILE) == NULL){
-        return INVALID_DATA_INPUT; // database is still empty so this pan is not exist yet
+        return READ_WRITE_ERROR; // database is still empty so this pan is not exist yet
     }
     uint8_t fPan[MAX_PAN]; f32_t balance;  // to get the info from data base
     while(fscanf(databaseFile, "%s ; %f ;", fPan, balance) == VALID_DATA_INPUT){
@@ -20,7 +20,7 @@ DatabaseError_t searchInDatabase(uint8_t PAN[]){
         }
     }
 
-    return INVALID_DATA_INPUT; // pan is not in the database
+    return USER_NOT_FOUND; // pan is not in the database
 }
 
 uint8_t mapUserFilePath(uint8_t holderName[], uint8_t PAN[], uint8_t Path[]){
@@ -33,7 +33,7 @@ uint8_t mapUserFilePath(uint8_t holderName[], uint8_t PAN[], uint8_t Path[]){
                             // greater than the len of the holderName + PAN passed to this function
 }
 
-DatabaseError_t insertToDatabase(uint8_t PAN[], f32_t balance){
+EN_DatabaseError_t insertToDatabase(uint8_t PAN[], f32_t balance){
     openfile(FILE_PATH, WRITE_TO_FILE);
     fprintf(databaseFile, "%s ; %f ;\n", PAN, balance);
     closefile();
@@ -41,7 +41,7 @@ DatabaseError_t insertToDatabase(uint8_t PAN[], f32_t balance){
     
 }
 
-DatabaseError_t getBalance(uint8_t PAN[], f32_t* balance){
+EN_DatabaseError_t getBalance(uint8_t PAN[], f32_t* balance){
     openfile(FILE_PATH, READ_FROM_FILE);
     uint8_t db_PAN[MAX_PAN];
     f32_t db_balance;
@@ -53,7 +53,7 @@ DatabaseError_t getBalance(uint8_t PAN[], f32_t* balance){
         }
     }
 
-    return INVALID_DATA_INPUT;
+    return USER_NOT_FOUND;
 }
 
 static void openfile(uint8_t filebath[], uint8_t flag[]){

@@ -15,6 +15,7 @@ typedef struct ST_transaction_t
     uint32_t transactionSequenceNumber;
 }ST_transaction_t;
 
+
 typedef enum EN_transState_t
 {
     APPROVED,

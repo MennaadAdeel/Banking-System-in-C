@@ -16,7 +16,7 @@ typedef struct ST_terminalData_t
     uint8_t TransActionData[DATE_LENTH];
 }ST_terminalData_t;
 
-
+ 
 typedef enum EN_terminalError_t
 {
     OK,WRON_DATE,

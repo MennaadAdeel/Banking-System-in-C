@@ -61,6 +61,7 @@ EN_terminalError_t getTransactionAmount(ST_terminalData_t *termData)
        return OK;
 }
 
+
 static uint8_t Check_Term_Date(uint8_t date)
 { // Function to check if the date entered by the user is valid or not
     if ((date == NULL) || (strlen(date) < DATE_LENTH))
