@@ -81,7 +81,6 @@ static f32_t Check_Term_Amount(f32_t data)
        return VALID;  //return 1
 }
 
-
 EN_terminalError_t setMaxAmount(ST_terminalData_t *termData)
 {
     //setting the Max Transaction Amount value 
@@ -91,4 +90,8 @@ EN_terminalError_t setMaxAmount(ST_terminalData_t *termData)
        return INVALID_MAX_AMOUNT;
     else
        return OK;
+}
+
+EN_terminalError_t getTransactionDate(ST_terminalData_t *termData){
+    
 }
