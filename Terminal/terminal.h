@@ -41,8 +41,8 @@ it returns:
 VALID: if the date on the card is greater than the date of transaction
 INVALID: if the date is less than the date of transaction
 */
-static uint8_t compareDates(uint8_t exDate[], uint8_t TransDate[];
-    /*
+static uint8_t compareDates(uint8_t exDate[], uint8_t TransDate[]);
+/*
 * function to take from the user the date
 * and check if it's matching the characteristics or not.
 */
