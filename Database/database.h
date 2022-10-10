@@ -32,4 +32,6 @@ EN_DatabaseError_t searchData(ST_accountDB_t *accData);
 
 
 static inline fpos_t getLineIndex(uint8_t pan[]);
+
+static inline void closeFile(void);
 #endif
