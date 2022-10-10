@@ -5,6 +5,14 @@
 #include "../Card/card.h"
 #include "../Terminal/terminal.h"
 
+#define PAN_MAX_CHAR        20 /* Account number max allowed string length */
+#define HOLDER_MAX_CHAR     25 /* Holder name max allowed string length */
+
+
+uint8_t cardName[HOLDER_MAX_CHAR];
+uint8_t PAN[PAN_MAX_CHAR];
+f32_t balance;
+
 #define PRIMARY_ACC_NUM 20   //primary account number
 
 typedef struct ST_transaction_t
