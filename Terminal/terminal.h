@@ -6,8 +6,8 @@
 
 #define DATE_LENTH 10   // The valid length of Date
 #define ZERO 0          // invalid amount 
-#define DATE_LENTH                  11  // The valid length of Date
-#define MAX_TRANSACTION_AMOUNT      2000 // the max amount of money that a user can transacte
+#define DATE_LENTH 11  // The valid length of Date
+#define MAX_TRANSACTION_AMOUNT 2000 // the max amount of money that a user can transacte
 
 typedef struct ST_terminalData_t
 {
