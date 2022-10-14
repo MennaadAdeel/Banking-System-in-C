@@ -5,11 +5,8 @@
 #include "../Database/database.h"
 #include "../Card/card.h"
 
-/*
-This Function is used to recieve transaction data and compaire it with
-the data saved in data base.
-And also rewrite the changes made on transaction data
-*/
+static ST_accountDB_t accountData;
+
 EN_transState_t recieveTransactionData(ST_transaction_t *transData)
 {
     ST_cardData_t *cardData;
@@ -49,69 +46,37 @@ EN_transState_t recieveTransactionData(ST_transaction_t *transData)
         else
             return DECLINED_STOLENCARD; //if the PAN is wrong
     }
+}
 
-    fclose(fp);  //closing the opened file
+EN_serverError_t isValidAccount(ST_cardData_t *cardData){
+    strcpy(accountData.primaryAccountNumber, cardData->primaryAccountNumber);
+    if(searchData(&accountData) == OK)
+        return OK;
+
+    return DECLINED_STOLENCARD;
+}
+
+EN_serverError_t isAmountAvailable(ST_terminalData_t *termData){
+    readData(&accountData);
+    if(termData->transAmount < accountData.balance){
+        return OK;
+    }
+
+    return LOW_BALANCE;
 }
 
 
-/*
-This function is used to validate card data
-and checks if the PAN is exist or not
-*/
-EN_serverError_t isValidAccount(ST_cardData_t *cardData)
-{
-    FILE *fp = NULL;   //file pointer handler
-    fp = fopen(FILE_PATH, "a+");   //opening the file and append to it
-    if (fp == NULL)
-    {
-        return ERROR_FILE;    //in case the file faced any problem
-    }
-
-
-    // this while loop is used to read the first 3 columns
-    while (fscanf(fp, "%s  &%s  &%f", cardName, PAN, balance) > 1)
-    {
-        //compairing the PAN in data base with the transaction PAN
-        if(strcmp(cardData->primaryAccountNumber, PAN) == OK)
-           return OK;  //return ok if the the PAN is valid
-        else
-           return DECLINED_STOLENCARD;   //if the PAN is unvalid
-    }
-
-    fclose(fp);  //closing the opened file
-
+EN_serverError_t saveTransaction(ST_transaction_t *transData){
+    static uint32_t sequenceNum = 1;
+    transData->transactionSequenceNumber = sequenceNum++;
+    saveLog(*transData);
+    return OK;
 }
 
-
-
-
-/*
-This function is used to validate terminal data
-and checks if the Amount is available or not
-*/
-EN_serverError_t isAmountAvailable(ST_terminalData_t *termData)
-{
-     FILE *fp = NULL;   //file pointer handler
-    fp = fopen(FILE_PATH, "a+");   //opening the file and append to it
-    if (fp == NULL)
-    {
-        return ERROR_FILE;    //in case the file faced any problem
-    }
-
-
-    // this while loop is used to read the first 3 columns
-    while (fscanf(fp, "%s  &%s  &%f", cardName, PAN, balance) > 1)
-    {
-        //compairing the Balance in data base with the terminal amount
-        if (termData->transAmount > balance)
-           return LOW_BALANCE;  //if the Amount is bigger than the balance
-        else
-           return OK;    //if the Amount is less than the balance
-    }
-
-    fclose(fp);  //closing the opened file
+EN_serverError_t getTransaction(uint32_t transactionSequenceNumber, ST_transaction_t *transData){
+    transData->transactionSequenceNumber = transactionSequenceNumber;
+    if(getLog(transData) == OK)
+        return OK;
     
+    return TRANSACTION_NOT_FOUND;
 }
-
-
-
