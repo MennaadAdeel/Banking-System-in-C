@@ -17,9 +17,9 @@ f32_t balance;
 
 typedef struct ST_transaction_t
 {
-    ST_cardData_t cardHolderData;
-    ST_terminalData_t terminalData;
-    EN_transState_t transState;
+    ST_cardData_t *cardHolderData;
+    ST_terminalData_t *terminalData;
+    EN_transState_t *transState;
     uint32_t transactionSequenceNumber;
 }ST_transaction_t;
 
@@ -64,6 +64,7 @@ EN_serverError_t saveTransaction(ST_transaction_t *transData);
 
 
 EN_serverError_t getTransaction(uint32_t transactionSequenceNumber, ST_transaction_t *transData);
+
 
 
 #endif
