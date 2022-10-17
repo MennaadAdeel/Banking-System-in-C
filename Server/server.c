@@ -5,6 +5,7 @@
 #include "../Database/database.h"
 #include "../Card/card.h"
 
+// use this variable to store the current client account data (pan and balance)
 static ST_accountDB_t accountData;
 
 /*
@@ -14,17 +15,16 @@ and also update the data base with the new balance.
 */
 EN_transState_t recieveTransactionData(ST_transaction_t *transData)
 {
-
-    f32_t tempBalance ;
-    if (isValidAccount(transData) == OK)
+    f32_t tempBalance;
+    if (isValidAccount(transData->cardHolderData) == OK)
     {
         tempBalance = accountData.balance;
         // check if the balance in data base is bigger than the transaction amount
-        if (isAmountAvailable(transData) == OK)
+        if (isAmountAvailable(transData->terminalData) == OK)
         {
             // replace the old balance with the new one
             accountData.balance -= transData->terminalData->transAmount; // update the new balance
-            writeData(&accountData.balance);                             // save the new balance into data base
+            writeData(&accountData);                     // save the new balance into data base
         }
         else
             return DECLINED_INSUFFECIENT_FUND; // if the amount isn't available        }
@@ -41,21 +41,6 @@ EN_transState_t recieveTransactionData(ST_transaction_t *transData)
         saveTransaction(transData->transactionSequenceNumber); // save the transaction sequence Number
         return APPROVED;        // in case no error accured
     }
-
-    // if(isValidAccount(transData->cardHolderData) == OK){
-    //     if(isAmountAvailable(transData->terminalData) == OK){
-    //         if(saveTransaction(transData) == OK){
-    //             return OK;
-    //         }
-
-    //         return SAVING_FAILED;
-    //     }
-
-    //     return LOW_BALANCE;
-    // }
-
-    // return DECLINED_STOLENCARD;
-    
 }
 
 
