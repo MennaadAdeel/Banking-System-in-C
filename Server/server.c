@@ -14,11 +14,13 @@ and also update the data base with the new balance.
 */
 EN_transState_t recieveTransactionData(ST_transaction_t *transData)
 {
-    f32_t *tempBalance = &accountData.balance;
-    if (isValidAccount(transData->cardHolderData->primaryAccountNumber) == OK)
+
+    f32_t tempBalance ;
+    if (isValidAccount(transData) == OK)
     {
+        tempBalance = accountData.balance;
         // check if the balance in data base is bigger than the transaction amount
-        if (isAmountAvailable(transData->terminalData) == OK)
+        if (isAmountAvailable(transData) == OK)
         {
             // replace the old balance with the new one
             accountData.balance -= transData->terminalData->transAmount; // update the new balance
@@ -31,8 +33,8 @@ EN_transState_t recieveTransactionData(ST_transaction_t *transData)
     else 
         return DECLINED_STOLENCARD;       // if the PAN is wrong
 
-    // this condition is to make sure the balance updated or not
-    if (&accountData.balance == tempBalance)
+    // this condition is to make sure the balance updated 
+    if (accountData.balance == tempBalance)
         return INTERNAL_SERVER_ERROR; // in case an error accured
     else
     {
@@ -47,6 +49,7 @@ EN_transState_t recieveTransactionData(ST_transaction_t *transData)
 // This function is to check if the PAN is valid or not
 EN_serverError_t isValidAccount(ST_cardData_t *cardData)
 {
+    strcpy(accountData.primaryAccountNumber, cardData->primaryAccountNumber);
     if (searchData(&accountData) == OK)
         return OK;
 
