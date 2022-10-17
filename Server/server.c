@@ -41,6 +41,21 @@ EN_transState_t recieveTransactionData(ST_transaction_t *transData)
         saveTransaction(transData->transactionSequenceNumber); // save the transaction sequence Number
         return APPROVED;        // in case no error accured
     }
+
+    // if(isValidAccount(transData->cardHolderData) == OK){
+    //     if(isAmountAvailable(transData->terminalData) == OK){
+    //         if(saveTransaction(transData) == OK){
+    //             return OK;
+    //         }
+
+    //         return SAVING_FAILED;
+    //     }
+
+    //     return LOW_BALANCE;
+    // }
+
+    // return DECLINED_STOLENCARD;
+    
 }
 
 
