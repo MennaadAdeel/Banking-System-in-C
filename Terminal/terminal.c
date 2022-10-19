@@ -9,20 +9,20 @@ EN_terminalError_t getTransactionDate(ST_terminalData_t *termData)
 {
     time_t t ;
     struct tm *tmp ;
-    char MY_DATE[DATE_LENTH];
-    time( &t );
+    char myDate[DATE_LENTH];
+    time(&t);
      
     //localtime() uses the time pointed by t ,
     // to fill a tm structure with the
     // values that represent the
     // corresponding local time.
      
-    tmp = localtime( &t );
+    tmp = localtime(&t);
      
     // using strftime to display time
-    strftime(MY_DATE, sizeof(MY_DATE), "%x", tmp);
+    strftime(myDate, sizeof(myDate), "%d/%m/%Y", tmp);
 
-    strcpy(termData->TransActionData,MY_DATE);
+    strcpy(termData->TransActionData,myDate);
 
     // function to check if there's Null char or exceeded the lenght
     if(Check_Term_Date(termData->TransActionData) == INVALID)
