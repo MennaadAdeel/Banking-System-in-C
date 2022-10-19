@@ -22,10 +22,10 @@ EN_terminalError_t getTransactionDate(ST_terminalData_t *termData)
     // using strftime to display time
     strftime(myDate, sizeof(myDate), "%d/%m/%Y", tmp);
 
-    strcpy(termData->TransActionData,myDate);
+    strcpy(termData->TransActionDate,myDate);
 
     // function to check if there's Null char or exceeded the lenght
-    if(Check_Term_Date(termData->TransActionData) == INVALID)
+    if(Check_Term_Date(termData->TransActionDate) == INVALID)
         return WRON_DATE;  //the date isn't matching the characteristics
 
     else
@@ -36,7 +36,7 @@ EN_terminalError_t getTransactionDate(ST_terminalData_t *termData)
 EN_terminalError_t isCardExpired(ST_cardData_t cardData, ST_terminalData_t termData){
     // comapare the card expiry date with the date of today
     // it should be less than the date of transaction
-    if(compareDates(cardData.cardExpirationDate, termData.TransActionData) == VALID)
+    if(compareDates(cardData.cardExpirationDate, termData.TransActionDate) == VALID)
         return OK; // card is still valid and not expired
     
     return EXPIRED_CARD; // card expired
@@ -102,8 +102,4 @@ EN_terminalError_t setMaxAmount(ST_terminalData_t *termData)
        return INVALID_MAX_AMOUNT;
     else
        return OK;
-}
-
-EN_terminalError_t getTransactionDate(ST_terminalData_t *termData){
-    
 }

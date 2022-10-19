@@ -13,7 +13,7 @@ typedef struct ST_terminalData_t
 {
     float transAmount;
     float maxTransAmount;
-    uint8_t TransActionData[DATE_LENTH];
+    uint8_t TransActionDate[DATE_LENTH];
 }ST_terminalData_t;
 
  
