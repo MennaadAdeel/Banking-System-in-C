@@ -2,15 +2,27 @@
 #include <string.h>
 #include "../global.h"
 #include "terminal.h"
+#include <dos.h>
 
 
 EN_terminalError_t getTransactionDate(ST_terminalData_t *termData)
 {
-    printf("Enter the Transaction date");
-    // printf to take the date of card from the user
+    time_t t ;
+    struct tm *tmp ;
+    char MY_DATE[DATE_LENTH];
+    time( &t );
+     
+    //localtime() uses the time pointed by t ,
+    // to fill a tm structure with the
+    // values that represent the
+    // corresponding local time.
+     
+    tmp = localtime( &t );
+     
+    // using strftime to display time
+    strftime(MY_DATE, sizeof(MY_DATE), "%x", tmp);
 
-    gets(termData->TransActionData);
-    // gets is to read the string date from user
+    strcpy(termData->TransActionData,MY_DATE);
 
     // function to check if there's Null char or exceeded the lenght
     if(Check_Term_Date(termData->TransActionData) == INVALID)
