@@ -78,6 +78,21 @@ EN_DatabaseError_t searchData(ST_accountDB_t *accData){
 }
 
 
+EN_DatabaseError_t saveLog(ST_transaction_t transData){
+    if((databaseFilePtr = fopen(LOG_FILE, "a+")) != NULL){
+        //      pointer          name  pan exDate  Ammount transactionState TransactionDate SequenceNumber
+        fprintf(databaseFilePtr, "%s %s %s %s %s %s");
+    }
+
+    return ERROR_FILE;
+}
+
+
+EN_DatabaseError_t getLog(ST_transaction_t *transData){
+
+}
+
+
 static inline fpos_t getLineIndex(uint8_t pan[]){
     fpos_t line;
     fgetpos(databaseFilePtr, &line);
@@ -98,3 +113,4 @@ static inline void closeFile(void){
     fclose(databaseFilePtr);
     databaseFilePtr = NULL;
 }
+

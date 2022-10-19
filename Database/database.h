@@ -2,6 +2,9 @@
 #define _DATABASE_
 
 #define FILE_PATH       "data"       // here we configure the file bath
+#define LOG_FILE        "db/log.txt"
+#define BILL_FILE       "Bill/Bill.txt"
+
 #define READ_FORMAT "%s &%f;\n"
 #define WRITE_FORMAT  "%s &%f;          "
 #define MAX_READ_WRITE_CHAR 100
