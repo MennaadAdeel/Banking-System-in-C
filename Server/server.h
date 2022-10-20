@@ -29,7 +29,7 @@ typedef enum EN_transState_t
     APPROVED,
     DECLINED_INSUFFECIENT_FUND,
     DECLINED_STOLENCARD,
-    INTERNAL_SERVER_ERROR   
+    INTERNAL_SERVER_ERROR
 }EN_transState_t;
 
 

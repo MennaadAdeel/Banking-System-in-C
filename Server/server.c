@@ -26,8 +26,10 @@ EN_transState_t recieveTransactionData(ST_transaction_t *transData)
             accountData.balance -= transData->terminalData->transAmount; // update the new balance
             writeData(&accountData);                     // save the new balance into data base
         }
-        else
-            return DECLINED_INSUFFECIENT_FUND; // if the amount isn't available        }
+        else{
+            transData->terminalData->transAmount = 0; // clear the amount to not be subtracted from the existing balance        
+            return DECLINED_INSUFFECIENT_FUND; // if the amount isn't available        
+        }
         
     }
     else 

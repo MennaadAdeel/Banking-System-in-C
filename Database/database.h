@@ -13,6 +13,7 @@ typedef enum EN_DatabaseError_t{
   OK,
   READ_WRITE_ERROR,
   USER_NOT_FOUND,
+  TRANSACTION_NOT_FOUND,
   ERROR_FILE  
 }EN_DatabaseError_t;
 
