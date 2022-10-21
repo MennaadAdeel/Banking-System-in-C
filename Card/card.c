@@ -5,19 +5,19 @@
 
 
 EN_cardError_t getCardHolderName(ST_cardData_t* cardData){
-    printf("Enter your card name:");
+    printf("Enter your card name :: ");
     // reading the name from user with fgets to read string with spaced
     // there're different methods to do the same thing too with scanf and gets functions
     fgets(cardData->cardHolderName, HOLDER_MAX_CHAR, stdin);
     // check the string requirements in length and non-Null pointer
     if(checkStringValidation(cardData->cardHolderName, HOLDER_MAX_CHAR, HOLDER_MIN_CHAR) == VALID)
-        return OK; // the string entered by user meets the holder name requirements
+        return OK_CARD; // the string entered by user meets the holder name requirements
     
     return WRONG_NAME; // the string entered does NOT meet holder name requiements
 }
 
 EN_cardError_t getCardExpiryDate(ST_cardData_t* cardData){
-    printf("Enter your card expiry date:");
+    printf("Enter your card expiry date in the format MM/YY :: ");
     // reading the name from user with fgets to read string with spaced
     // there're different methods to do the same thing too with scanf and gets functions
     fgets(cardData->cardExpirationDate, EXDATE_MAX_CHAR, stdin);
@@ -25,20 +25,20 @@ EN_cardError_t getCardExpiryDate(ST_cardData_t* cardData){
     if(checkStringValidation(cardData->cardExpirationDate, EXDATE_MAX_CHAR, EXDATE_MIN_CHAR) == VALID){
         // after that we have to check the format of the date as well
         if(checkDateFormat(cardData->cardExpirationDate) == VALID)
-            return OK; //  string entered by user meets the PAN requirements
+            return OK_CARD; //  string entered by user meets the PAN requirements
     }
     
     return WRONG_EXP_DATE; // the string entered does NOT meet the PAN requiements
 }
 
 EN_cardError_t getCardPAN(ST_cardData_t* cardData){    
-    printf("Enter your card PAN:");
+    printf("Enter your card PAN :: ");
     // reading the PAN from user with fgets to read string with spaced
     // there're different methods to do the same thing too with scanf and gets functions
     fgets(cardData->primaryAccountNumber, PAN_MAX_CHAR, stdin);
     // check the string requirements in length and non-Null pointer
     if(checkStringValidation(cardData->primaryAccountNumber, PAN_MAX_CHAR, PAN_MIN_CHAR) == VALID)
-        return OK; //  string entered by user meets the PAN requirements
+        return OK_CARD; //  string entered by user meets the PAN requirements
     
     return WRONG_PAN; // the string entered does NOT meet the PAN requiements
 }

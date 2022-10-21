@@ -29,7 +29,7 @@ EN_terminalError_t getTransactionDate(ST_terminalData_t *termData)
         return WRON_DATE;  //the date isn't matching the characteristics
 
     else
-        return OK; //the date is matching the characteristics
+        return OK_TERMINAL; //the date is matching the characteristics
 
 }
 
@@ -37,7 +37,7 @@ EN_terminalError_t isCardExpired(ST_cardData_t cardData, ST_terminalData_t termD
     // comapare the card expiry date with the date of today
     // it should be less than the date of transaction
     if(compareDates(cardData.cardExpirationDate, termData.TransActionDate) == VALID)
-        return OK; // card is still valid and not expired
+        return OK_TERMINAL; // card is still valid and not expired
     
     return EXPIRED_CARD; // card expired
 }
@@ -45,8 +45,8 @@ EN_terminalError_t isCardExpired(ST_cardData_t cardData, ST_terminalData_t termD
 
 EN_terminalError_t isBelowMaxAmount(ST_terminalData_t* termData){
     // compare the transaction value with the max transaction amount
-    if(termData->transAmount <= termData->maxTransAmount)
-        return OK;  // allowed amount
+    if(termData->transAmount <= termData->maxTransAmount && termData->transAmount > 0 )
+        return OK_TERMINAL;  // allowed amount
     
     return EXCEED_MAX_AMOUNT; // unallowed amount
 }
@@ -62,7 +62,7 @@ static uint8_t compareDates(uint8_t exDate[], uint8_t TransDate[]){
 
 EN_terminalError_t getTransactionAmount(ST_terminalData_t *termData)
 {
-    printf("Enter the Transaction Amount");
+    printf("Enter the Transaction Amount :: ");
     // printf is to take the transaction Amount
     scanf("%f",termData->transAmount);
     //take the float number and save it in termdata
@@ -70,7 +70,7 @@ EN_terminalError_t getTransactionAmount(ST_terminalData_t *termData)
     if(Check_Term_Amount == INVALID)
        return INVALID_AMOUNT;
     else
-       return OK;
+       return OK_TERMINAL;
 }
 
 
@@ -101,5 +101,5 @@ EN_terminalError_t setMaxAmount(ST_terminalData_t *termData)
     if(termData <=0)
        return INVALID_MAX_AMOUNT;
     else
-       return OK;
+       return OK_TERMINAL;
 }

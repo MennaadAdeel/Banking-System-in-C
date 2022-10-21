@@ -17,7 +17,7 @@
  * Card module
 */
 typedef enum EN_cardError_t{
-    OK,
+    OK_CARD,
     WRONG_NAME,
     WRONG_EXP_DATE,
     WRONG_PAN

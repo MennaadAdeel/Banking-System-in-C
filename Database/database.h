@@ -10,7 +10,7 @@
 #define MAX_READ_WRITE_CHAR 100
 
 typedef enum EN_DatabaseError_t{
-  OK,
+  OK_DATABASE,
   READ_WRITE_ERROR,
   USER_NOT_FOUND,
   TRANSACTION_NOT_FOUND,

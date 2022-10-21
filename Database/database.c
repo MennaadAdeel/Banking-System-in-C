@@ -22,7 +22,7 @@ EN_DatabaseError_t writeData(ST_accountDB_t *accData){
         fsetpos(databaseFilePtr, &line);
         if(fprintf(databaseFilePtr, WRITE_FORMAT, accData->primaryAccountNumber, accData->balance) == 1){
             closeFile();
-            return OK;
+            return OK_DATABASE;
         }
     }
 
@@ -46,7 +46,7 @@ EN_DatabaseError_t readData(ST_accountDB_t *accData){
             if(!strcmp(accData->primaryAccountNumber, tempPan)){
                 accData->balance = Balance;
                 closeFile();
-                return OK;
+                return OK_DATABASE;
             }
         }
     }                                        
@@ -70,7 +70,7 @@ EN_DatabaseError_t searchData(ST_accountDB_t *accData){
         while(fscanf(databaseFilePtr, READ_FORMAT, tempPan, &Balance) == VALID){
             if(!strcmp(accData->primaryAccountNumber, tempPan)){
                 closeFile();
-                return OK;
+                return OK_DATABASE;
             }
         }
     }
@@ -86,12 +86,12 @@ EN_DatabaseError_t saveLog(ST_transaction_t transData){
         //      pointer          name  pan exDate
         fprintf(databaseFilePtr, "%s %s %s ", transData.cardHolderData->cardHolderName, transData.cardHolderData->primaryAccountNumber, transData.cardHolderData->cardExpirationDate);
         getTransactionState(transData.transState, state);
-        fprintf(databaseFilePtr, "%s %s %d ", transData.terminalData->TransActionData, state, transData.transactionSequenceNumber);
+        fprintf(databaseFilePtr, "%s %s %d ", transData.terminalData->TransActionDate, state, transData.transactionSequenceNumber);
         if(transData.transState == APPROVED || transData.transState == DECLINED_INSUFFECIENT_FUND){                        
             fprintf(databaseFilePtr, "%.2f %.2f\n", transData.terminalData->transAmount, balance - transData.terminalData->transAmount);
             system("python3 fwd-Project/Database/Bill/Bill.py");   
         }
-        return OK;
+        return OK_DATABASE;
     }
 
     return ERROR_FILE;
@@ -102,7 +102,7 @@ EN_DatabaseError_t getLog(ST_transaction_t *transData){
     uint32_t sqNum;
     uint8_t state[MAX_READ_WRITE_CHAR];
     f32_t balance;
-    while(fscanf(databaseFilePtr, "%s %s %s %s %s %d %f %f", transData->cardHolderData->cardHolderName, transData->cardHolderData->primaryAccountNumber, transData->cardHolderData->cardExpirationDate, transData->terminalData->TransActionData, state, sqNum, transData->terminalData->transAmount, balance)){
+    while(fscanf(databaseFilePtr, "%s %s %s %s %s %d %f %f", transData->cardHolderData->cardHolderName, transData->cardHolderData->primaryAccountNumber, transData->cardHolderData->cardExpirationDate, transData->terminalData->TransActionDate, state, sqNum, transData->terminalData->transAmount, balance)){
         if(sqNum == transData->transactionSequenceNumber){
             if(strcmp(state, "SUCCESSFULL")){
                 transData->transState = APPROVED;
@@ -116,7 +116,7 @@ EN_DatabaseError_t getLog(ST_transaction_t *transData){
             if(strcmp(state, "SERVER_ERROR")){
                 transData->transState = INTERNAL_SERVER_ERROR;
             }
-            return OK;
+            return OK_DATABASE;
         }
     }
 

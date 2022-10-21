@@ -35,7 +35,7 @@ typedef enum EN_transState_t
 
 typedef enum EN_serverError_t
 {
-    OK,
+    OK_SERVER,
     SAVING_FAILED,
     TRANSACTION_NOT_FOUND,
     ACOUNT_NOT_FOUND,
