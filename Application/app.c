@@ -39,7 +39,7 @@ void appStart(void)
                         for (uint16_t i = 0; i < 10; i++)
                         {
                             printf("*"); // processing symbole
-                            Sleep(1000); // 1 second delay
+                            Sleep(250); // 1 second delay
                         }
                         printf("Success..");
                         check = VALID; // to exit the loop.
@@ -48,7 +48,7 @@ void appStart(void)
                         printf("Wrong PAN format!");
                 }
                 else
-                    printf("undefined date");
+                    printf("Error! Expired card");
             }
             else
                 printf("Wrong Date format!");
@@ -99,7 +99,7 @@ void appStart(void)
                     for (uint16_t i = 0; i < 10; i++)
                     {
                         printf("*"); // processing symbole
-                        Sleep(1000); // 1 second delay
+                        Sleep(250); // 1 second delay
                     }
                     getTransactionDate(&termData);
                     printf("Aprroved..");
