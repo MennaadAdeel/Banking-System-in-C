@@ -4,7 +4,6 @@
 #include "../global.h"
 #include "../Card/card.h"
 
-#define DATE_LENTH 10   // The valid length of Date
 #define ZERO 0          // invalid amount 
 #define DATE_LENTH 11  // The valid length of Date
 #define MAX_TRANSACTION_AMOUNT 7000 // the max amount of money that a user can transacte
@@ -43,12 +42,6 @@ VALID: if the date on the card is greater than the date of transaction
 INVALID: if the date is less than the date of transaction
 */
 static uint8_t compareDates(uint8_t exDate[], uint8_t TransDate[]);
-/*
-* function to take from the user the date
-* and check if it's matching the characteristics or not.
-*/
-static uint8_t Check_Term_Date(uint8_t date);
-
 
 
 EN_terminalError_t getTransactionDate(ST_terminalData_t *termData);
