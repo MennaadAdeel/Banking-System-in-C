@@ -54,4 +54,7 @@ this function closes the file opened
 and assigns the pointer to that file to NULL
 */
 static inline void closeFile(void);
+
+static inline void getTransactionState(EN_transState_t state, uint8_t strState[]);
+
 #endif

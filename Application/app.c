@@ -6,8 +6,6 @@
 
 void appStart(void)
 {
-    ST_cardData_t cardData;
-    ST_terminalData_t termData;
     ST_transaction_t transData;
 
     uint8_t TerminalCheck;
@@ -21,18 +19,18 @@ void appStart(void)
     while (!check)
     {
         // asking user to enter the name.
-        EN_card = getCardHolderName(&cardData);
+        EN_card = getCardHolderName(&transData.cardHolderData);
         if (EN_card == OK_CARD)
         {
             // asking user to enter the expiry date.
-            EN_terminal = getCardExpiryDate(&cardData);
+            EN_terminal = getCardExpiryDate(&transData.cardHolderData);
             if (EN_card == OK_CARD)
             {
-                EN_terminal = isCardExpired(cardData, termData);
+                EN_terminal = isCardExpired(transData.cardHolderData, transData.terminalData);
                 if (EN_terminal == OK_TERMINAL)
                 {
                     // asking user to enter the primary account number.
-                    EN_card = getCardPAN(&cardData);
+                    EN_card = getCardPAN(&transData.cardHolderData);
                     if (EN_card == OK_CARD)
                     {
                         // a delay loop to to procces the informations.
@@ -60,11 +58,11 @@ void appStart(void)
     check = VALID;
     while (check == VALID)
     {
-        EN_terminal = getTransactionAmount(&termData);
+        EN_terminal = getTransactionAmount(&transData.terminalData);
         if (EN_terminal == OK_TERMINAL)
         {
-            setMaxAmount(&termData);
-            EN_terminal = isBelowMaxAmount(&termData);
+            setMaxAmount(&transData.terminalData);
+            EN_terminal = isBelowMaxAmount(&transData.terminalData);
             if (EN_terminal == EXCEED_MAX_AMOUNT)
             {
                 printf("un acceptable amount!");
@@ -78,7 +76,7 @@ void appStart(void)
             }
             else
             {
-                EN_server = recieveTransactionData(&termData);
+                EN_server = recieveTransactionData(&transData.terminalData);
                 if (EN_server == DECLINED_INSUFFECIENT_FUND)
                 {
                     printf("The Amount is not available ");
@@ -101,7 +99,7 @@ void appStart(void)
                         printf("*"); // processing symbole
                         Sleep(250); // 1 second delay
                     }
-                    getTransactionDate(&termData);
+                    getTransactionDate(&transData.terminalData);
                     printf("Aprroved..");
                     check == INVALID;
                 }
