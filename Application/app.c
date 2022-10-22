@@ -2,7 +2,6 @@
 #include "../Card/card.h"
 #include "../Terminal/terminal.h"
 #include "../Server/server.h"
-#include <windows.h>
 
 void appStart(void)
 {
@@ -26,7 +25,7 @@ void appStart(void)
             EN_terminal = getCardExpiryDate(&transData.cardHolderData);
             if (EN_card == OK_CARD)
             {
-                EN_terminal = isCardExpired(transData.cardHolderData, transData.terminalData);
+                EN_terminal = isCardExpired(*transData.cardHolderData, *transData.terminalData);
                 if (EN_terminal == OK_TERMINAL)
                 {
                     // asking user to enter the primary account number.
@@ -76,7 +75,7 @@ void appStart(void)
             }
             else
             {
-                EN_server = recieveTransactionData(&transData.terminalData);
+                EN_server = recieveTransactionData(&transData);
                 if (EN_server == DECLINED_INSUFFECIENT_FUND)
                 {
                     printf("The Amount is not available ");

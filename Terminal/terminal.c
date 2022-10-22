@@ -2,8 +2,7 @@
 #include <string.h>
 #include "../global.h"
 #include "terminal.h"
-#include <dos.h>
-
+#include "time.h"
 
 EN_terminalError_t getTransactionDate(ST_terminalData_t *termData)
 {
@@ -98,7 +97,7 @@ EN_terminalError_t setMaxAmount(ST_terminalData_t *termData)
     //setting the Max Transaction Amount value 
     termData->maxTransAmount = MAX_TRANSACTION_AMOUNT;
     //condition to check whether the MaxAmount is bigger than or equal to zero
-    if(termData <=0)
+    if(termData->maxTransAmount <=0)
        return INVALID_MAX_AMOUNT;
     else
        return OK_TERMINAL;

@@ -1,6 +1,4 @@
 #include <stdio.h>
-#include <windows.h>
-
 #include "../Card/card.h"
 #include "../Terminal/terminal.h"
 #include "../Server/server.h"
