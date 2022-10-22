@@ -28,6 +28,12 @@ typedef enum EN_terminalError_t
 }EN_terminalError_t;
 
 
+
+
+
+/*
+this is Luhn Algorithm to validate the primary account number
+*/
 EN_terminalError_t isValidCardPAN(ST_cardData_t* cardData);
 
 
@@ -45,11 +51,6 @@ static uint8_t compareDates(uint8_t exDate[], uint8_t TransDate[]);
 
 
 EN_terminalError_t getTransactionDate(ST_terminalData_t *termData);
-/*
-* function to take from the user the date
-* and check if it's matching the characteristics or not.
-*/
-static uint8_t Check_Term_Date(uint8_t date);
 
 
 EN_terminalError_t getTransactionAmount(ST_terminalData_t *termData);

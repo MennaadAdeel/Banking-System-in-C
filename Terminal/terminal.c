@@ -46,31 +46,31 @@ EN_terminalError_t isBelowMaxAmount(ST_terminalData_t *termData)
 static uint8_t compareDates(uint8_t exDate[], uint8_t TransDate[])
 {
     /* this function will compare the two dates according to the ASCII code
-     of each character 
+     of each character
     */
 
-    //the outer if is to compare the left number of years
+    // the outer if is to compare the left number of years
     if (TransDate[8] < exDate[3])
-        return VALID;   //this means the date is valid and we don't need to complete the conditions.
+        return VALID; // this means the date is valid and we don't need to complete the conditions.
     else if (TransDate[8] > exDate[3])
         return INVALID;
     else
     {
-        //comparing the right number of years.
+        // comparing the right number of years.
         if (TransDate[9] < exDate[4])
             return VALID;
         else if (TransDate[9] > exDate[4])
             return INVALID;
         else
         {
-            //comparing the left number of months.
+            // comparing the left number of months.
             if (TransDate[3] < exDate[0])
                 return VALID;
             else if (TransDate[3] > exDate[0])
                 return INVALID;
             else
             {
-                //comparing the right number of months.
+                // comparing the right number of months.
                 if (TransDate[4] < exDate[1])
                     return VALID;
                 else if (TransDate[4] > exDate[1])
@@ -95,19 +95,6 @@ EN_terminalError_t getTransactionAmount(ST_terminalData_t *termData)
         return OK_TERMINAL;
 }
 
-/*
-static uint8_t Check_Term_Date(uint8_t date[])
-{
-    if(t)
-
-     // Function to check if the date entered by the user is valid or not
-    if ((date == NULL) || (strlen(date) < DATE_LENTH))
-        return INVALID;  //return 0
-    else
-         return VALID;   //return 1
-
-}*/
-
 static f32_t Check_Term_Amount(f32_t data)
 {
     // this condition is to check whether th transaction ammount
@@ -127,4 +114,49 @@ EN_terminalError_t setMaxAmount(ST_terminalData_t *termData)
         return INVALID_MAX_AMOUNT;
     else
         return OK_TERMINAL;
+}
+
+
+
+EN_terminalError_t isValidCardPAN(ST_cardData_t *cardData)
+{
+    uint32_t sum1 = 0;
+    uint32_t sum2 = 0;
+    uint32_t i, change, temp, sum;
+
+    // adding every number with odd index.
+    uint32_t size = strlen(cardData->primaryAccountNumber);
+    for (i = 1; i <= size; i += 2)
+    {
+        change = cardData->primaryAccountNumber[i] - '0';
+        sum1 += change;
+    }
+
+    /*
+     multiplying every number with even index by 2 and check
+     either the number is bigger than or equal to 10 we will subtract 9 from the number,
+     or the number is less than 10 it will remain the same and add them together
+     at the end we'll add the two operations together and check
+     if the reminder in 0 then the PAN in valid.
+    */
+    for (i = 0; i < size; i += 2)
+    {
+        change = cardData->primaryAccountNumber[i] - '0';
+        temp = change;
+        change *= 2;
+        if (change < 10)
+            temp = change;
+        else
+        {
+            change -= 9;
+            temp = change;
+        }
+        sum2 += temp;
+    }
+
+    sum = sum1 + sum2;
+    if (sum % 10 == 0)
+        return OK_TERMINAL;
+    else
+        return INVALID_CARD;
 }
