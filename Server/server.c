@@ -4,6 +4,8 @@
 #include "server.h"
 #include "../Database/database.h"
 #include "../Card/card.h"
+#include "../Terminal/terminal.h"
+
 
 // use this variable to store the current client account data (pan and balance)
 static ST_accountDB_t accountData;
@@ -40,7 +42,7 @@ EN_transState_t recieveTransactionData(ST_transaction_t *transData)
         return INTERNAL_SERVER_ERROR; // in case an error accured
     else
     {
-        saveTransaction(transData->transactionSequenceNumber); // save the transaction sequence Number
+        saveTransaction(transData); // save the transaction sequence Number
         return APPROVED;        // in case no error accured
     }
 }

@@ -15,15 +15,6 @@ f32_t balance;
 
 #define PRIMARY_ACC_NUM 20   //primary account number
 
-typedef struct ST_transaction_t
-{
-    ST_cardData_t *cardHolderData;
-    ST_terminalData_t *terminalData;
-    EN_transState_t *transState;
-    uint32_t transactionSequenceNumber;
-}ST_transaction_t;
-
-
 typedef enum EN_transState_t
 {
     APPROVED,
@@ -31,6 +22,16 @@ typedef enum EN_transState_t
     DECLINED_STOLENCARD,
     INTERNAL_SERVER_ERROR
 }EN_transState_t;
+
+typedef struct ST_transaction_t
+{
+    ST_cardData_t *cardHolderData;
+    ST_terminalData_t *terminalData;
+    EN_transState_t transState;
+    uint32_t transactionSequenceNumber;
+}ST_transaction_t;
+
+
 
 
 typedef enum EN_serverError_t
