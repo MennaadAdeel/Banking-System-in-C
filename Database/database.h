@@ -1,7 +1,7 @@
 #ifndef _DATABASE_
 #define _DATABASE_
 
-#define FILE_PATH       "data"       // here we configure the file bath
+#define FILE_PATH       "accounts/data.txt"       // here we configure the file bath
 #define LOG_FILE        "db/log.txt"
 #define BILL_FILE       "Bill/Bill.txt"
 
