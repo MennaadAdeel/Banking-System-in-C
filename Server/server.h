@@ -9,10 +9,6 @@
 #define HOLDER_MAX_CHAR     25 /* Holder name max allowed string length */
 
 
-uint8_t cardName[HOLDER_MAX_CHAR];
-uint8_t PAN[PAN_MAX_CHAR];
-f32_t balance;
-
 #define PRIMARY_ACC_NUM 20   //primary account number
 
 typedef enum EN_transState_t
