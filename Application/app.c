@@ -1,7 +1,17 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include "../global.h"
 #include "../Card/card.h"
 #include "../Terminal/terminal.h"
 #include "../Server/server.h"
+#include "app.h"
+
+#if OS == WINDOWS
+    #include <windows.h>
+#elif OS == LINUX
+    #include <unistd.h>
+#endif
+
 
 void appStart(void)
 {
@@ -36,7 +46,7 @@ void appStart(void)
                         for (uint16_t i = 0; i < 10; i++)
                         {
                             printf("*"); // processing symbole
-                            Sleep(250); // 1 second delay
+                            timeSleeping(250); // 1 second delay
                         }
                         printf("Success..");
                         check = VALID; // to exit the loop.
@@ -96,7 +106,7 @@ void appStart(void)
                     for (uint16_t i = 0; i < 10; i++)
                     {
                         printf("*"); // processing symbole
-                        Sleep(250); // 1 second delay
+                        timeSleeping(250); // 1 second delay
                     }
                     getTransactionDate(transData.terminalData);
                     printf("Aprroved..");
@@ -107,4 +117,12 @@ void appStart(void)
     }
 
    
+}
+
+static inline void timeSleeping(uint32_t milliSeconds){
+#if OS == WINDOWS
+    Sleep(milliSeconds);
+#elif OS == LINUX
+    sleep(milliSeconds);
+#endif
 }
