@@ -12,6 +12,7 @@
 #define EXDATE_MAX_CHAR     6  /* Expiry date max allowed string length */
 #define EXDATE_MIN_CHAR     5  /* Expiry date min allowed string length */
 
+#define CARD_MAX_CHAR    100
 /* 
  * This enum defines the error check type for
  * Card module
@@ -28,9 +29,9 @@ typedef enum EN_cardError_t{
  *  and its members
  */
 typedef struct ST_cardData_t{
-    uint8_t cardHolderName[HOLDER_MAX_CHAR];
-    uint8_t primaryAccountNumber[PAN_MAX_CHAR];
-    uint8_t cardExpirationDate[EXDATE_MAX_CHAR];
+    uint8_t cardHolderName[CARD_MAX_CHAR];
+    uint8_t primaryAccountNumber[CARD_MAX_CHAR];
+    uint8_t cardExpirationDate[CARD_MAX_CHAR];
 }ST_cardData_t;
 
 

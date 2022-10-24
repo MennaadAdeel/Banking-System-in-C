@@ -18,18 +18,18 @@ and also update the data base with the new balance.
 EN_transState_t recieveTransactionData(ST_transaction_t *transData)
 {
     f32_t tempBalance;
-    if (isValidAccount(transData->cardHolderData) == OK_SERVER)
+    if (isValidAccount(&transData->cardHolderData) == OK_SERVER)
     {
         tempBalance = accountData.balance;
         // check if the balance in data base is bigger than the transaction amount
-        if (isAmountAvailable(transData->terminalData) == OK_SERVER)
+        if (isAmountAvailable(&transData->terminalData) == OK_SERVER)
         {
             // replace the old balance with the new one
-            accountData.balance -= transData->terminalData->transAmount; // update the new balance
+            accountData.balance -= transData->terminalData.transAmount; // update the new balance
             writeData(&accountData);                     // save the new balance into data base
         }
         else{
-            transData->terminalData->transAmount = 0; // clear the amount to not be subtracted from the existing balance        
+            transData->terminalData.transAmount = 0; // clear the amount to not be subtracted from the existing balance        
             return DECLINED_INSUFFECIENT_FUND; // if the amount isn't available        
         }
         

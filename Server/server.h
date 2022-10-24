@@ -21,8 +21,8 @@ typedef enum EN_transState_t
 
 typedef struct ST_transaction_t
 {
-    ST_cardData_t *cardHolderData;
-    ST_terminalData_t *terminalData;
+    ST_cardData_t cardHolderData;
+    ST_terminalData_t terminalData;
     EN_transState_t transState;
     uint32_t transactionSequenceNumber;
 }ST_transaction_t;
