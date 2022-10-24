@@ -28,10 +28,7 @@ void appStart(void)
         // asking user to enter the name.
         EN_card = getCardHolderName(&transData.cardHolderData);
         if (EN_card == WRONG_NAME)
-        {
             printf("Wrong Name format!\n");
-            check = INVALID;
-        }
         else
             check = VALID;
     }
@@ -45,18 +42,12 @@ void appStart(void)
         // asking user to enter the expiry date.
         EN_card = getCardExpiryDate(&transData.cardHolderData);
         if (EN_card == WRONG_EXP_DATE)
-        {
             printf("Wrong Date format!\n");
-            check = INVALID;
-        }
         else
         {
             EN_terminal = isCardExpired(transData.cardHolderData, transData.terminalData);
             if (EN_terminal == EXPIRED_CARD)
-            {
                 printf("Error! Expired card");
-                check = INVALID;
-            }
             else
                 check = VALID;
         }
@@ -71,9 +62,7 @@ void appStart(void)
         // asking user to enter the primary account number.
         EN_card = getCardPAN(&transData.cardHolderData);
         if (EN_card == WRONG_PAN)
-        {
             printf("Wrong PAN format!\n");
-        }
         else
         {
             EN_card = isValidCardPAN(&transData.cardHolderData);
