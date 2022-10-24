@@ -32,6 +32,7 @@ EN_cardError_t getCardExpiryDate(ST_cardData_t* cardData){
     return WRONG_EXP_DATE; // the string entered does NOT meet the PAN requiements
 }
 
+
 EN_cardError_t getCardPAN(ST_cardData_t* cardData){    
     printf("Enter your card PAN :: ");
     // reading the PAN from user with fgets to read string with spaced
