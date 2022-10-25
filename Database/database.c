@@ -20,7 +20,7 @@ EN_DatabaseError_t writeData(ST_accountDB_t *accData){
         fpos_t line = getLineIndex(accData->primaryAccountNumber);
         
         fsetpos(databaseFilePtr, &line);
-        if(fprintf(databaseFilePtr, WRITE_FORMAT, accData->primaryAccountNumber, accData->balance) != INVALID){
+        if(fprintf(databaseFilePtr, WRITE_FORMAT, accData->primaryAccountNumber, accData->balance) != EOF){
             closeFile();
             return OK_DATABASE;
         }
@@ -40,7 +40,7 @@ EN_DatabaseError_t readData(ST_accountDB_t *accData){
 
     if(databaseFilePtr != NULL){
         uint8_t tempPan[MAX_READ_WRITE_CHAR];
-        while(fscanf(databaseFilePtr, READ_FORMAT, tempPan, &userBalance) != INVALID){
+        while(fscanf(databaseFilePtr, READ_FORMAT, tempPan, &userBalance) != EOF){
             if(!strcmp(accData->primaryAccountNumber, tempPan)){
                 accData->balance = userBalance;
                 closeFile();
@@ -48,7 +48,7 @@ EN_DatabaseError_t readData(ST_accountDB_t *accData){
             }
         }
     }                                        
-    
+
     return READ_WRITE_ERROR;
 }
 
@@ -63,14 +63,14 @@ EN_DatabaseError_t searchData(ST_accountDB_t *accData){
                                             // on the begining of the file
     if(databaseFilePtr != NULL){
         uint8_t tempPan[MAX_READ_WRITE_CHAR];
-        while(fscanf(databaseFilePtr, READ_FORMAT, tempPan, &userBalance) != INVALID){
+        while(fscanf(databaseFilePtr, READ_FORMAT, tempPan, &userBalance) != EOF){
             if(!strcmp(accData->primaryAccountNumber, tempPan)){
                 closeFile();
                 return OK_DATABASE;
             }
         }
     }
-
+    accData->balance = userBalance = 0;
     return USER_NOT_FOUND;
 }
 
@@ -82,9 +82,7 @@ EN_DatabaseError_t saveLog(ST_transaction_t transData){
         fprintf(databaseFilePtr, "%s %s %s ", transData.cardHolderData.cardHolderName, transData.cardHolderData.primaryAccountNumber, transData.cardHolderData.cardExpirationDate);
         getTransactionState(transData.transState, state);
         fprintf(databaseFilePtr, "%s %s %d ", transData.terminalData.TransActionDate, state, transData.transactionSequenceNumber);
-        if(transData.transState == APPROVED || transData.transState == DECLINED_INSUFFECIENT_FUND){                        
-            fprintf(databaseFilePtr, "%.2f %.2f\n", transData.terminalData.transAmount, (f32_t) (userBalance - transData.terminalData.transAmount));
-        }
+        fprintf(databaseFilePtr, "%.2f %.2f\n", transData.terminalData.transAmount, (f32_t) (userBalance - transData.terminalData.transAmount));
         generateFatora(transData);
         closeFile();
         return OK_DATABASE;
@@ -98,7 +96,7 @@ EN_DatabaseError_t getLog(ST_transaction_t *transData){
     uint32_t sqNum;
     uint8_t state[MAX_READ_WRITE_CHAR];
     f32_t balance;
-    while(fscanf(databaseFilePtr, "%s %s %s %s %s %d %f %f", transData->cardHolderData.cardHolderName, transData->cardHolderData.primaryAccountNumber, transData->cardHolderData.cardExpirationDate, transData->terminalData.TransActionDate, state, &sqNum, &transData->terminalData.transAmount, &balance)){
+    while(fscanf(databaseFilePtr, "%s %s %s %s %s %d %f %f", transData->cardHolderData.cardHolderName, transData->cardHolderData.primaryAccountNumber, transData->cardHolderData.cardExpirationDate, transData->terminalData.TransActionDate, state, &sqNum, &transData->terminalData.transAmount, &balance) != EOF){
         if(sqNum == transData->transactionSequenceNumber){
             if(strcmp(state, "SUCCESSFULL")){
                 transData->transState = APPROVED;
@@ -127,7 +125,7 @@ static inline fpos_t getLineIndex(uint8_t pan[]){
     uint8_t tempPan[MAX_READ_WRITE_CHAR];
     f32_t Balance;
     
-    while(fscanf(databaseFilePtr, READ_FORMAT, tempPan, &Balance) != INVALID){
+    while(fscanf(databaseFilePtr, READ_FORMAT, tempPan, &Balance) != EOF){
         if(!strcmp(pan, tempPan)){
             break;
         }
@@ -149,7 +147,7 @@ static inline void getTransactionState(EN_transState_t state, uint8_t strState[]
             strcpy(strState, "SUCCESSFULL");
             break;
         case DECLINED_INSUFFECIENT_FUND:
-            strcpy(strState, "FAILED");
+            strcpy(strState, "INSUFFECIENT_FUND");
             break;
         case DECLINED_STOLENCARD:
             strcpy(strState, "STOLEN_CARD");
@@ -175,6 +173,6 @@ static inline void generateFatora(ST_transaction_t transData){
         fprintf(billFile, "%0.2f\n", userBalance - transData.terminalData.transAmount);
         fprintf(billFile, "%d\n", transData.transactionSequenceNumber);        
         fclose(billFile);
-        system("python3 Database/Bill/Bill.py");
+        system("python Database/Bill/Bill.py");
     }
 }

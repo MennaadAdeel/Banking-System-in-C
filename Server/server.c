@@ -26,20 +26,24 @@ EN_transState_t recieveTransactionData(ST_transaction_t *transData)
             tempBalance = accountData.balance;
             // replace the old balance with the new one
             accountData.balance -= transData->terminalData.transAmount; // update the new balance
-            writeData(&accountData);                                   // save the new balance into data base
-            if(saveTransaction(transData) == OK_SERVER) // save the transaction sequence Number
-                return APPROVED;
-            else
-                return INTERNAL_SERVER_ERROR;
+            writeData(&accountData);                              // save the new balance into data base            
+            transData->transState = APPROVED;            
         }
         else{
             transData->terminalData.transAmount = 0; // clear the amount to not be subtracted from the existing balance        
-            return DECLINED_INSUFFECIENT_FUND; // if the amount isn't available        
+            transData->transState = DECLINED_INSUFFECIENT_FUND;
         }
         
     }
-    else 
-        return DECLINED_STOLENCARD;       // if the PAN is wrong
+    else{ 
+        transData->transState = DECLINED_STOLENCARD;       // if the PAN is wrong
+        transData->terminalData.transAmount = 0;
+    }
+
+    if(saveTransaction(transData) == OK_SERVER)
+        return transData->transState;
+    else
+        return INTERNAL_SERVER_ERROR;
 }
 
 

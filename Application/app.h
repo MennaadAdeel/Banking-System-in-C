@@ -9,4 +9,6 @@ void appStart(void);
 
 static inline void timeSleeping(uint32_t milliSeconds);
 
+static void waitProcessing(uint32_t milliSeconds);
+
 #endif
