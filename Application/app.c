@@ -72,6 +72,8 @@ void appStart(void)
     }
 }
 
+
+//this function is used to determined if the os is Windows or linux.
 static inline void timeSleeping(uint32_t milliSeconds)
 {
 #if OS == WINDOWS
@@ -81,11 +83,13 @@ static inline void timeSleeping(uint32_t milliSeconds)
 #endif
 }
 
+
+//function to describe the processing simulation.
 static void waitProcessing(uint32_t milliSeconds){
     printf("Processing");
     for(uint32_t Iterator = 0; Iterator < MAX_PROCESSING_TIME; Iterator++){
         printf("*");
-        timeSleeping(milliSeconds);
+        timeSleeping(milliSeconds);   //time in millisecinds
     }
     printf("\n");
 }

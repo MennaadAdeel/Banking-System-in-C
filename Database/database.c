@@ -17,9 +17,9 @@ EN_DatabaseError_t writeData(ST_accountDB_t *accData){
     databaseFilePtr = fopen(FILE_PATH, "r+"); // open the file for reading and writing with the 
                                             // cursor position in the begining of the file
     if(databaseFilePtr != NULL){
-        fpos_t line = getLineIndex(accData->primaryAccountNumber);
+        fpos_t line = getLineIndex(accData->primaryAccountNumber); //getting the line Index
         
-        fsetpos(databaseFilePtr, &line);
+        fsetpos(databaseFilePtr, &line);    //set the cursor the the Index mentioned
         if(fprintf(databaseFilePtr, WRITE_FORMAT, accData->primaryAccountNumber, accData->balance) != INVALID){
             closeFile();
             return OK_DATABASE;
@@ -79,14 +79,18 @@ EN_DatabaseError_t saveLog(ST_transaction_t transData){
     uint8_t state[MAX_READ_WRITE_CHAR];
     if((databaseFilePtr = fopen(LOG_FILE, "a+")) != NULL){
         //      pointer          name  pan exDate
+        // save data into log file.
         fprintf(databaseFilePtr, "%s %s %s ", transData.cardHolderData.cardHolderName, transData.cardHolderData.primaryAccountNumber, transData.cardHolderData.cardExpirationDate);
-        getTransactionState(transData.transState, state);
+        getTransactionState(transData.transState, state);  //get the state of file.
+        // write the transaction state, date and sequence number.
         fprintf(databaseFilePtr, "%s %s %d ", transData.terminalData.TransActionDate, state, transData.transactionSequenceNumber);
         if(transData.transState == APPROVED || transData.transState == DECLINED_INSUFFECIENT_FUND){                        
             fprintf(databaseFilePtr, "%.2f %.2f\n", transData.terminalData.transAmount, (f32_t) (userBalance - transData.terminalData.transAmount));
         }
+
+        //generate the receipt.
         generateFatora(transData);
-        closeFile();
+        closeFile();  // closing the file.
         return OK_DATABASE;
     }
 
@@ -94,10 +98,11 @@ EN_DatabaseError_t saveLog(ST_transaction_t transData){
 }
 
 
+// this function is used to get the state from log file.
 EN_DatabaseError_t getLog(ST_transaction_t *transData){
-    uint32_t sqNum;
-    uint8_t state[MAX_READ_WRITE_CHAR];
-    f32_t balance;
+    uint32_t sqNum;   //integer variable for sequence Number.
+    uint8_t state[MAX_READ_WRITE_CHAR];    //char array to store the state.
+    f32_t balance;   //integer variable for balance/
     while(fscanf(databaseFilePtr, "%s %s %s %s %s %d %f %f", transData->cardHolderData.cardHolderName, transData->cardHolderData.primaryAccountNumber, transData->cardHolderData.cardExpirationDate, transData->terminalData.TransActionDate, state, &sqNum, &transData->terminalData.transAmount, &balance)){
         if(sqNum == transData->transactionSequenceNumber){
             if(strcmp(state, "SUCCESSFULL")){
@@ -121,27 +126,35 @@ EN_DatabaseError_t getLog(ST_transaction_t *transData){
 }   
 
 
+
+// this function is used to get the current cursor Index.
 static inline fpos_t getLineIndex(uint8_t pan[]){
     fpos_t line;
     fgetpos(databaseFilePtr, &line);
     uint8_t tempPan[MAX_READ_WRITE_CHAR];
     f32_t Balance;
     
+
+    // reading the two coloumns.
     while(fscanf(databaseFilePtr, READ_FORMAT, tempPan, &Balance) != INVALID){
         if(!strcmp(pan, tempPan)){
             break;
         }
-        fgetpos(databaseFilePtr, &line);
+        fgetpos(databaseFilePtr, &line);   
     }
 
     return line;
 }
 
+
+//this function is used to close the file.
 static inline void closeFile(void){
     fclose(databaseFilePtr);
     databaseFilePtr = NULL;
 }
 
+
+//function to write the state of the current file.
 static inline void getTransactionState(EN_transState_t state, uint8_t strState[]){
     switch (state)
     {
@@ -162,8 +175,10 @@ static inline void getTransactionState(EN_transState_t state, uint8_t strState[]
     }
 }
 
+
+// this function is used to write the receipt.
 static inline void generateFatora(ST_transaction_t transData){
-    FILE* billFile = fopen(BILL_FILE, "w");
+    FILE* billFile = fopen(BILL_FILE, "w");   //opening bill file.
     if(billFile != NULL){
         fprintf(billFile, "%s\n", transData.cardHolderData.cardHolderName);
         fprintf(billFile, "%s\n", transData.cardHolderData.primaryAccountNumber);
