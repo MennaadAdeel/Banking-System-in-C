@@ -20,10 +20,10 @@ EN_transState_t recieveTransactionData(ST_transaction_t *transData)
     f32_t tempBalance;
     if (isValidAccount(&transData->cardHolderData) == OK_SERVER)
     {
-        tempBalance = accountData.balance;
         // check if the balance in data base is bigger than the transaction amount
         if (isAmountAvailable(&transData->terminalData) == OK_SERVER)
         {
+            tempBalance = accountData.balance;
             // replace the old balance with the new one
             accountData.balance -= transData->terminalData.transAmount; // update the new balance
             writeData(&accountData);                     // save the new balance into data base

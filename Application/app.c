@@ -15,107 +15,57 @@
 void appStart(void)
 {
     ST_transaction_t transData;
-
-    uint8_t TerminalCheck;
-    uint32_t check;  // check variable to keep looping
-    uint32_t EN_card;     // enum integer variable to store the returned value from Card.
-    uint32_t EN_terminal; // enum integer variable to store the returned value from terminal.
-    uint32_t EN_server;   // enum integer variable to store the returned value from server.
-
-    // this while loop is used to take the card information from the client.
-    check = INVALID;
-    while (!check)
-    {
-        // asking user to enter the name.
-        EN_card = getCardHolderName(&transData.cardHolderData);
-        if (EN_card == OK_CARD)
-        {
-            // asking user to enter the expiry date.
-            EN_card = getCardExpiryDate(&transData.cardHolderData);
-            if (EN_card == OK_CARD)
-            {
-                EN_terminal = isCardExpired(transData.cardHolderData, transData.terminalData);
-                if (EN_terminal == OK_TERMINAL)
-                {
-                    // asking user to enter the primary account number.
-                    EN_card = getCardPAN(&transData.cardHolderData);
-                    if (EN_card == OK_CARD)
-                    {
-                        // a delay loop to to procces the informations.
-                        for (uint16_t i = 0; i < 10; i++)
-                        {
-                            printf("*"); // processing symbole
-                            timeSleeping(250); // 1 second delay
-                        }
-                        printf("Success..");
-                        check = VALID; // to exit the loop.
-                    }
-                    else
-                        printf("Wrong PAN format!");
-                }
-                else
-                    printf("Error! Expired card");
-            }
-            else
-                printf("Wrong Date format!");
+    while(VALID){
+        // try getting the right format of the user name
+        while(getCardHolderName(&transData.cardHolderData) != OK_CARD){
+            printf("Wrong name format!");
         }
-        else
-            printf("Wrong Name format!");
-    }
+        // the user entered a right format for the name
+        // try getting a right format of the user pan
+        while(getCardPAN(&transData.cardHolderData) != OK_CARD){
+            printf("Wrong PAN format!");
+        }
+        // the user entered a right format for the pan
+        // try getting a right format of the user card expiry date
+        while(getCardExpiryDate(&transData.cardHolderData) != OK_CARD){
+            printf("Wrong date format!");
+        }
 
-    check = VALID;
-    while (check == VALID)
-    {
-        EN_terminal = getTransactionAmount(&transData.terminalData);
-        if (EN_terminal == OK_TERMINAL)
-        {
-            setMaxAmount(&transData.terminalData);
-            EN_terminal = isBelowMaxAmount(&transData.terminalData);
-            if (EN_terminal == EXCEED_MAX_AMOUNT)
-            {
-                printf("un acceptable amount!");
-                printf("To enter another Amount press 'Y' :: ");
-                printf("To exit press 'x' :: ");
-                scanf("%c", &TerminalCheck);
-                if (TerminalCheck == 'x' || TerminalCheck == 'X')
-                    break;
-                else
-                    check = VALID;
-            }
-            else
-            {
-                EN_server = recieveTransactionData(&transData);
-                if (EN_server == DECLINED_INSUFFECIENT_FUND)
-                {
-                    printf("The Amount is not available ");
-                    printf("un acceptable amount!");
-                    printf("To enter another Amount press 'Y' :: ");
-                    printf("To exit press 'x' :: ");
-                    scanf("%c", &TerminalCheck);
-                    if (TerminalCheck == 'x' || TerminalCheck == 'X')
-                        break;
-                }
-                else if (EN_server == DECLINED_STOLENCARD)
-                {
-                    printf("The PAN is wroong");
-                    break;
-                }
-                else
-                {
-                    for (uint16_t i = 0; i < 10; i++)
-                    {
-                        printf("*"); // processing symbole
-                        timeSleeping(250); // 1 second delay
+        // checking if the entered pan is a real pan (not fake)
+        if(isValidCardPAN(&transData.cardHolderData) == OK_TERMINAL){
+            getTransactionDate(&transData.terminalData); // get the date of today from pc
+            // check if the card is not expired by comparing the ex date with today's date
+            if(isCardExpired(transData.cardHolderData, transData.terminalData) == OK_TERMINAL){
+                setMaxAmount(&transData.terminalData);
+                getTransactionAmount(&transData.terminalData);
+                if(isBelowMaxAmount(&transData.terminalData) == OK_TERMINAL){
+                    EN_serverError_t local_ServerError = recieveTransactionData(&transData);
+                    if(local_ServerError == APPROVED){
+                        saveTransaction(&transData);
                     }
-                    getTransactionDate(&transData.terminalData);
-                    printf("Aprroved..");
-                    check == INVALID;
+                    else if(local_ServerError == DECLINED_INSUFFECIENT_FUND){
+                        printf("Declined Insuffecient Fund!\n");
+                    }
+                    else if(local_ServerError == DECLINED_STOLENCARD){
+                        printf("Declined Invalid Account\n");
+                    }
+                    else if(local_ServerError == INTERNAL_SERVER_ERROR){
+                        printf("Declined Internal Server Error\n");
+                    }
                 }
+                else{
+                    printf("Declined Amount Exceeding Limit\n");
+                }
+            }
+            else{
+                printf("Declined Expired Card\n");
             }
         }
-    }
+        else{
+            printf("Declined Not Real PAN\n");
+        }
 
-   
+    }
 }
 
 static inline void timeSleeping(uint32_t milliSeconds){
@@ -124,4 +74,13 @@ static inline void timeSleeping(uint32_t milliSeconds){
 #elif OS == LINUX
     sleep(milliSeconds);
 #endif
+}
+
+static void waitProcessing(uint32_t milliSeconds){
+    printf("Processing");
+    for(uint32_t Iterator = 0; Iterator < MAX_PROCESSING_TIME; Iterator++){
+        printf("*");
+        timeSleeping(milliSeconds);
+    }
+    printf("\n");
 }

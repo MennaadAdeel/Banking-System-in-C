@@ -61,7 +61,7 @@ static uint8_t checkDateFormat(uint8_t date[]){
     monthes[0] = date[0];
     monthes[1] = date[1];
     monthes[2] = '\0';
-    if(!(strcmp(monthes, "00") > 0 && strcmp(monthes, "12") < 0))
+    if(!(strcmp(monthes, "00") > 0 && strcmp(monthes, "13") < 0))
         return INVALID;
     if(date[2] != '/')
         return INVALID;

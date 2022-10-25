@@ -41,7 +41,7 @@ EN_DatabaseError_t readData(ST_accountDB_t *accData){
 
     if(databaseFilePtr != NULL){
         uint8_t tempPan[MAX_READ_WRITE_CHAR];
-        while(fscanf(databaseFilePtr, READ_FORMAT, tempPan, &userBalance) == VALID){
+        while(fscanf(databaseFilePtr, READ_FORMAT, tempPan, &userBalance) != INVALID){
             if(!strcmp(accData->primaryAccountNumber, tempPan)){
                 accData->balance = userBalance;
                 closeFile();
@@ -65,7 +65,7 @@ EN_DatabaseError_t searchData(ST_accountDB_t *accData){
                                             // on the begining of the file
     if(databaseFilePtr != NULL){
         uint8_t tempPan[MAX_READ_WRITE_CHAR];
-        while(fscanf(databaseFilePtr, READ_FORMAT, tempPan, &userBalance) == VALID){
+        while(fscanf(databaseFilePtr, READ_FORMAT, tempPan, &userBalance) != INVALID){
             if(!strcmp(accData->primaryAccountNumber, tempPan)){
                 closeFile();
                 return OK_DATABASE;
