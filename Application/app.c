@@ -17,17 +17,17 @@ void appStart(void)
     while(VALID){
         // try getting the right format of the user name
         while(getCardHolderName(&transData.cardHolderData) != OK_CARD){
-            printf("Wrong name format!");
+            printf("Wrong name format!\n");
         }
         // the user entered a right format for the name
         // try getting a right format of the user pan
         while(getCardPAN(&transData.cardHolderData) != OK_CARD){
-            printf("Wrong PAN format!");
+            printf("Wrong PAN format!\n");
         }
         // the user entered a right format for the pan
         // try getting a right format of the user card expiry date
         while(getCardExpiryDate(&transData.cardHolderData) != OK_CARD){
-            printf("Wrong date format!");
+            printf("Wrong date format!\n");
         }
 
         // checking if the entered pan is a real pan (not fake)
@@ -44,6 +44,7 @@ void appStart(void)
                     // here we receive the transaction data
                     EN_serverError_t local_ServerError = recieveTransactionData(&transData);
                     if(local_ServerError == APPROVED){
+                        waitProcessing(700);
                         printf("your transaction is saved! take your bill\n");
                     }
                     else if(local_ServerError == DECLINED_INSUFFECIENT_FUND){
