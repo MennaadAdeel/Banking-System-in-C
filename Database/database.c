@@ -20,13 +20,12 @@ EN_DatabaseError_t writeData(ST_accountDB_t *accData){
         fpos_t line = getLineIndex(accData->primaryAccountNumber);
         
         fsetpos(databaseFilePtr, &line);
-        if(fprintf(databaseFilePtr, WRITE_FORMAT, accData->primaryAccountNumber, accData->balance) == 1){
+        if(fprintf(databaseFilePtr, WRITE_FORMAT, accData->primaryAccountNumber, accData->balance) != INVALID){
             closeFile();
             return OK_DATABASE;
         }
     }
 
-    closeFile();
     return READ_WRITE_ERROR;
 }
 
@@ -50,7 +49,6 @@ EN_DatabaseError_t readData(ST_accountDB_t *accData){
         }
     }                                        
     
-    closeFile();
     return READ_WRITE_ERROR;
 }
 
@@ -73,7 +71,6 @@ EN_DatabaseError_t searchData(ST_accountDB_t *accData){
         }
     }
 
-    closeFile();
     return USER_NOT_FOUND;
 }
 
@@ -86,9 +83,10 @@ EN_DatabaseError_t saveLog(ST_transaction_t transData){
         getTransactionState(transData.transState, state);
         fprintf(databaseFilePtr, "%s %s %d ", transData.terminalData.TransActionDate, state, transData.transactionSequenceNumber);
         if(transData.transState == APPROVED || transData.transState == DECLINED_INSUFFECIENT_FUND){                        
-            fprintf(databaseFilePtr, "%.2f %.2f\n", transData.terminalData.transAmount, userBalance - transData.terminalData.transAmount);
-            system("python3 fwd-Project/Database/Bill/Bill.py");   
+            fprintf(databaseFilePtr, "%.2f %.2f\n", transData.terminalData.transAmount, (f32_t) (userBalance - transData.terminalData.transAmount));
         }
+        generateFatora(transData);
+        closeFile();
         return OK_DATABASE;
     }
 
@@ -114,6 +112,7 @@ EN_DatabaseError_t getLog(ST_transaction_t *transData){
             if(strcmp(state, "SERVER_ERROR")){
                 transData->transState = INTERNAL_SERVER_ERROR;
             }
+            closeFile();
             return OK_DATABASE;
         }
     }
@@ -128,7 +127,7 @@ static inline fpos_t getLineIndex(uint8_t pan[]){
     uint8_t tempPan[MAX_READ_WRITE_CHAR];
     f32_t Balance;
     
-    while(fscanf(databaseFilePtr, READ_FORMAT, tempPan, &Balance) == VALID){
+    while(fscanf(databaseFilePtr, READ_FORMAT, tempPan, &Balance) != INVALID){
         if(!strcmp(pan, tempPan)){
             break;
         }
@@ -160,5 +159,22 @@ static inline void getTransactionState(EN_transState_t state, uint8_t strState[]
             break;
         default:
             strcpy(strState, "FAILED");
+    }
+}
+
+static inline void generateFatora(ST_transaction_t transData){
+    FILE* billFile = fopen(BILL_FILE, "w");
+    if(billFile != NULL){
+        fprintf(billFile, "%s\n", transData.cardHolderData.cardHolderName);
+        fprintf(billFile, "%s\n", transData.cardHolderData.primaryAccountNumber);
+        fprintf(billFile, "%s\n", transData.terminalData.TransActionDate);
+        uint8_t state[MAX_READ_WRITE_CHAR];
+        getTransactionState(transData.transState, state);
+        fprintf(billFile, "%s\n", state);
+        fprintf(billFile, "%0.2f\n", transData.terminalData.transAmount);
+        fprintf(billFile, "%0.2f\n", userBalance - transData.terminalData.transAmount);
+        fprintf(billFile, "%d\n", transData.transactionSequenceNumber);        
+        fclose(billFile);
+        system("python3 Database/Bill/Bill.py");
     }
 }

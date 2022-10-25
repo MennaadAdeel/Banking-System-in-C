@@ -36,12 +36,16 @@ void appStart(void)
             getTransactionDate(&transData.terminalData); // get the date of today from pc
             // check if the card is not expired by comparing the ex date with today's date
             if(isCardExpired(transData.cardHolderData, transData.terminalData) == OK_TERMINAL){
+                // set the maximum amount of money per transaction
                 setMaxAmount(&transData.terminalData);
+                // read the amount of money to be paid from user
                 getTransactionAmount(&transData.terminalData);
+                // check if the amount entered by the user is below the max amount
                 if(isBelowMaxAmount(&transData.terminalData) == OK_TERMINAL){
+                    // here we receive the transaction data
                     EN_serverError_t local_ServerError = recieveTransactionData(&transData);
                     if(local_ServerError == APPROVED){
-                        saveTransaction(&transData);
+                        printf("your transaction is saved! take your bill\n");
                     }
                     else if(local_ServerError == DECLINED_INSUFFECIENT_FUND){
                         printf("Declined Insuffecient Fund!\n");

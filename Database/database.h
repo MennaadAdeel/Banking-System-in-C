@@ -1,12 +1,12 @@
 #ifndef _DATABASE_
 #define _DATABASE_
 
-#define FILE_PATH       "accounts/data.txt"       // here we configure the file bath
-#define LOG_FILE        "db/log.txt"
-#define BILL_FILE       "Bill/Bill.txt"
+#define FILE_PATH       "Database/accounts/data.txt"       // here we configure the file bath
+#define LOG_FILE        "Database/db/log.txt"
+#define BILL_FILE       "Database/Bill/Bill.txt"
 
-#define READ_FORMAT "%s &%f;\n"
-#define WRITE_FORMAT  "%s &%0.2f;          "
+#define READ_FORMAT "%s %f\n"
+#define WRITE_FORMAT  "%s %0.2f"
 #define MAX_READ_WRITE_CHAR 100
 
 typedef enum EN_DatabaseError_t{
@@ -55,6 +55,16 @@ and assigns the pointer to that file to NULL
 */
 static inline void closeFile(void);
 
+/*
+  this function maps the numerical state into a string
+  state to be printed
+*/
 static inline void getTransactionState(EN_transState_t state, uint8_t strState[]);
+
+/*
+  this function saves the current transaction into the bill file
+  with a format to be readable for the python
+*/
+static inline void generateFatora(ST_transaction_t transData);
 
 #endif

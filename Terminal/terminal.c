@@ -89,7 +89,7 @@ EN_terminalError_t getTransactionAmount(ST_terminalData_t *termData)
     scanf("%f", &termData->transAmount);
     // take the float number and save it in termdata
     // function that check if the transaction is bigger than zero
-    if (Check_Term_Amount == INVALID)
+    if (Check_Term_Amount(termData->transAmount) == INVALID)
         return INVALID_AMOUNT;
     else
         return OK_TERMINAL;
