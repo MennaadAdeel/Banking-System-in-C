@@ -62,7 +62,7 @@ EN_serverError_t isValidAccount(ST_cardData_t *cardData)
 EN_serverError_t isAmountAvailable(ST_terminalData_t *termData)
 {
     readData(&accountData);
-    if (termData->transAmount < accountData.balance)
+    if (termData->transAmount <= accountData.balance)
     {
         return OK_SERVER;
     }

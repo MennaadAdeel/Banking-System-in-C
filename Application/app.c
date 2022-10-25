@@ -6,11 +6,10 @@
 #include "app.h"
 
 #if OS == WINDOWS
-    #include <windows.h>
+#include <windows.h>
 #elif OS == LINUX
-    #include <unistd.h>
+#include <unistd.h>
 #endif
-
 
 void appStart(void)
 {
@@ -72,7 +71,8 @@ void appStart(void)
     }
 }
 
-static inline void timeSleeping(uint32_t milliSeconds){
+static inline void timeSleeping(uint32_t milliSeconds)
+{
 #if OS == WINDOWS
     Sleep(milliSeconds);
 #elif OS == LINUX
