@@ -28,7 +28,8 @@ EN_terminalError_t isCardExpired(ST_cardData_t cardData, ST_terminalData_t termD
 {
     // comapare the card expiry date with the date of today
     // it should be less than the date of transaction
-    if (compareDates(cardData.cardExpirationDate, termData.TransActionDate) == VALID)
+    uint32_t compare = compareDates(cardData.cardExpirationDate, termData.TransActionDate) ;
+    if ( compare == VALID)
         return OK_TERMINAL; // card is still valid and not expired
 
     return EXPIRED_CARD; // card expired
@@ -89,7 +90,8 @@ EN_terminalError_t getTransactionAmount(ST_terminalData_t *termData)
     scanf("%f", &termData->transAmount);
     // take the float number and save it in termdata
     // function that check if the transaction is bigger than zero
-    if (Check_Term_Amount == INVALID)
+    uint32_t check = Check_Term_Amount(termData->transAmount);
+    if ( check == INVALID)
         return INVALID_AMOUNT;
     else
         return OK_TERMINAL;
