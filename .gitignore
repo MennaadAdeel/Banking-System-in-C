@@ -1,0 +1,4 @@
+*.pdf
+.vscode
+*.out
+*.exe
