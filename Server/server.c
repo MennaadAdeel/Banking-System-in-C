@@ -65,13 +65,13 @@ EN_serverError_t isValidAccount(ST_cardData_t *cardData)
 // This function is to check if the transaction amount is less than the balance or not
 EN_serverError_t isAmountAvailable(ST_terminalData_t *termData)
 {
-    readData(&accountData);
+    readData(&accountData); //read the data from the data base.
     if (termData->transAmount <= accountData.balance)
     {
-        return OK_SERVER;
+        return OK_SERVER;  //if the amount is available
     }
 
-    return LOW_BALANCE;
+    return LOW_BALANCE;   //if the amount isn't available
 }
 
 
