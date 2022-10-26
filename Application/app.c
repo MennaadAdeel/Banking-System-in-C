@@ -89,7 +89,9 @@ static void waitProcessing(uint32_t milliSeconds){
     printf("Processing");
     for(uint32_t Iterator = 0; Iterator < MAX_PROCESSING_TIME; Iterator++){
         printf("*");
-        fflush(stdout);
+        #if OS == LINUX
+            fflush(stdout);
+        #endif
         timeSleeping(milliSeconds);   //time in millisecinds
     }
     printf("\n");
