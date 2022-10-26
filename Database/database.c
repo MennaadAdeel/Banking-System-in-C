@@ -184,6 +184,10 @@ static inline void generateFatora(ST_transaction_t transData){
         fprintf(billFile, "%0.2f\n", userBalance - transData.terminalData.transAmount);
         fprintf(billFile, "%d\n", transData.transactionSequenceNumber);        
         fclose(billFile);
-        system("python Database/Bill/Bill.py");
+        #if OS == LINUX
+            system("python3 Database/Bill/Bill.py");
+        #elif OS == WINDOWS
+            system("python Database/Bill/Bill.py");
+        #endif
     }
 }

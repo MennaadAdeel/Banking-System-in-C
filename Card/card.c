@@ -67,7 +67,7 @@ static uint8_t checkDateFormat(uint8_t date[]){
     if(date[2] != '/')
         return INVALID;
 
-    if(!(strcmp(&date[3], "00") > 0))
+    if(!(strcmp(&date[3], "00") > 0 ||strcmp(&date[3], "00") == 0))
         return INVALID;
 
     return VALID;
