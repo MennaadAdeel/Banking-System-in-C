@@ -5,8 +5,8 @@
 #define LOG_FILE        "Database/db/log.txt"
 #define BILL_FILE       "Database/Bill/Bill.txt"
 
-#define READ_FORMAT "%s %f\n"
-#define WRITE_FORMAT  "%s %0.2f"
+#define READ_FORMAT "%s %f %[^\n]%*c\n"
+#define WRITE_FORMAT  "%s %0.2f ;"
 #define MAX_READ_WRITE_CHAR 100
 
 typedef enum EN_DatabaseError_t{

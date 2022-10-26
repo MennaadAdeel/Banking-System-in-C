@@ -39,8 +39,8 @@ EN_DatabaseError_t readData(ST_accountDB_t *accData){
                                             // on the begining of the file
 
     if(databaseFilePtr != NULL){
-        uint8_t tempPan[MAX_READ_WRITE_CHAR];
-        while(fscanf(databaseFilePtr, READ_FORMAT, tempPan, &userBalance) != EOF){
+        uint8_t tempPan[MAX_READ_WRITE_CHAR], spaces[MAX_READ_WRITE_CHAR];
+        while(fscanf(databaseFilePtr, READ_FORMAT, tempPan, &userBalance, spaces) != EOF){
             if(!strcmp(accData->primaryAccountNumber, tempPan)){
                 accData->balance = userBalance;
                 closeFile();
@@ -62,8 +62,8 @@ EN_DatabaseError_t searchData(ST_accountDB_t *accData){
     databaseFilePtr = fopen(FILE_PATH, "r"); // open the database file for reading only with pointer position 
                                             // on the begining of the file
     if(databaseFilePtr != NULL){
-        uint8_t tempPan[MAX_READ_WRITE_CHAR];
-        while(fscanf(databaseFilePtr, READ_FORMAT, tempPan, &userBalance) != EOF){
+        uint8_t tempPan[MAX_READ_WRITE_CHAR], spaces[MAX_READ_WRITE_CHAR];
+        while(fscanf(databaseFilePtr, READ_FORMAT, tempPan, &userBalance, spaces) != EOF){
             if(!strcmp(accData->primaryAccountNumber, tempPan)){
                 closeFile();
                 return OK_DATABASE;
@@ -127,10 +127,10 @@ EN_DatabaseError_t getLog(ST_transaction_t *transData){
 static inline fpos_t getLineIndex(uint8_t pan[]){
     fpos_t line;
     fgetpos(databaseFilePtr, &line);
-    uint8_t tempPan[MAX_READ_WRITE_CHAR];
+    uint8_t tempPan[MAX_READ_WRITE_CHAR], spaces[MAX_READ_WRITE_CHAR];
     f32_t Balance;
     
-    while(fscanf(databaseFilePtr, READ_FORMAT, tempPan, &Balance) != EOF){
+    while(fscanf(databaseFilePtr, READ_FORMAT, tempPan, &Balance, spaces) != EOF){
         if(!strcmp(pan, tempPan)){
             break;
         }

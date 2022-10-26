@@ -4,7 +4,7 @@
 #include "../global.h"
 
 #define HOLDER_MAX_CHAR     25 /* Holder name max allowed string length */
-#define HOLDER_MIN_CHAR     20 /* Holder name min allowed string length */
+#define HOLDER_MIN_CHAR     15 /* Holder name min allowed string length */
 
 #define PAN_MAX_CHAR        20 /* Account number max allowed string length */
 #define PAN_MIN_CHAR        16 /* Account number min allowed string length */
