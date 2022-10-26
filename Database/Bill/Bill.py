@@ -1,4 +1,3 @@
-from pydoc import Doc
 from docx import Document
 from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
 
