@@ -44,7 +44,7 @@ void appStart(void)
                     // here we receive the transaction data
                     EN_serverError_t local_ServerError = recieveTransactionData(&transData);
                     if(local_ServerError == APPROVED){
-                        waitProcessing(700);
+                        waitProcessing(1);
                         printf("your transaction is saved! take your bill\n");
                     }
                     else if(local_ServerError == DECLINED_INSUFFECIENT_FUND){

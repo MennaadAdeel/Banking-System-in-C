@@ -7,6 +7,8 @@
 
 void appStart(void);
 
+static void waitProcessing(uint32_t milliSeconds);
+
 static inline void timeSleeping(uint32_t milliSeconds);
 
 #endif
