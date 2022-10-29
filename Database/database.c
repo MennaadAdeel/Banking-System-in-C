@@ -184,7 +184,9 @@ static inline void generateFatora(ST_transaction_t transData){
         fprintf(billFile, "%0.2f\n", userBalance - transData.terminalData.transAmount);
         fprintf(billFile, "%d\n", transData.transactionSequenceNumber);        
         fclose(billFile);
-        #if OS == LINUX
+        
+        system("pip install python-docs");        
+        #if OS == LINUX            
             system("python3 Database/Bill/Bill.py");
         #elif OS == WINDOWS
             system("python Database/Bill/Bill.py");
