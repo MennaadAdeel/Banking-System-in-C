@@ -185,7 +185,7 @@ static inline void generateFatora(ST_transaction_t transData){
         fprintf(billFile, "%d\n", transData.transactionSequenceNumber);        
         fclose(billFile);
         
-        system("pip install python-docs");        
+        system("pip install python-docx");        
         #if OS == LINUX            
             system("python3 Database/Bill/Bill.py");
         #elif OS == WINDOWS
