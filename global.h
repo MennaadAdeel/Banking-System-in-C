@@ -4,10 +4,10 @@
 #define VALID       1
 #define INVALID     0
 
-#define WINDOWS     1
-#define LINUX       0
+#define LINUX 0
+#define WINDOWS 1
+#define OS  LINUX
 
-#define OS          LINUX
 
 typedef unsigned char uint8_t;
 typedef unsigned short int uint16_t;

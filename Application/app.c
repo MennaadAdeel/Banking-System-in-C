@@ -76,11 +76,7 @@ void appStart(void)
 //this function is used to determined if the os is Windows or linux.
 static inline void timeSleeping(uint32_t milliSeconds)
 {
-#if OS == WINDOWS
-    Sleep(milliSeconds);
-#elif OS == LINUX
     sleep(milliSeconds);
-#endif
 }
 
 
